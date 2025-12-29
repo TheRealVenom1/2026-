@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - عيد ميلاد مجيد</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://images6.alphacoders.com/713/713377.jpg') no-repeat center center/cover;
+            color: white;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ثلج نازل */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1.5em;
+            animation: fall linear infinite;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        .login-container {
+            width: 400px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            transition: all 0.8s ease;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 32px;
+            color: #ff0000;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 16px;
+        }
+
+        input::placeholder { color: rgba(255, 255, 255, 0.8); }
+
+        .input-group i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffd700;
+            font-size: 20px;
+        }
+
+        .checkbox {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .forgot-link {
+            color: #ffd700;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff0000, #00ff00);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            transition: 0.4s;
+        }
+
+        button:hover { transform: scale(1.05); box-shadow: 0 0 25px gold; }
+
+        /* رسالة "بس يا بابا" */
+        .papa-msg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            font-weight: bold;
+            color: #ff4444;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px 60px;
+            border-radius: 20px;
+            border: 3px solid #ffd700;
+            text-shadow: 0 0 15px red;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            z-index: 1000;
+        }
+
+        .papa-msg.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* شاشة الترحيب */
+        .welcome {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0; left: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-text {
+            font-size: 60px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px red, 0 0 40px green;
+            animation: glow 2s infinite alternate, scaleUp 2s ease;
+        }
+
+        @keyframes glow { from { text-shadow: 0 0 20px red; } to { text-shadow: 0 0 50px gold; } }
+        @keyframes scaleUp { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+        .welcome i { font-size: 100px; margin: 20px; color: #ff0000; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <!-- ثلج نازل -->
+    <div class="snowflake">❄</div><div class="snowflake">✨</div><div class="snowflake">❅</div><div class="snowflake">🎄</div>
+    <div class="snowflake">⭐</div><div class="snowflake">🎁</div><div class="snowflake">❆</div>
+
+    <div class="login-container" id="loginForm">
+        <h2>🎅 عيد ميلاد مجيد 🎄</h2>
+        <form id="login">
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="اسم المستخدم">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="كلمة المرور">
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox"> تذكرني</label>
+                <a class="forgot-link" id="forgotPass">نسيت كلمة المرور؟</a>
+            </div>
+            <button type="submit">دخول 🎁</button>
+        </form>
+    </div>
+
+    <!-- رسالة بس يا بابا -->
+    <div class="papa-msg" id="papaMsg">بس يا بابا 😑</div>
+
+    <div class="welcome" id="welcome">
+        <i class="fas fa-gift"></i>
+        <div class="welcome-text">You Are Welcome</div>
+        <i class="fas fa-sleigh"></i>
+    </div>
+
+    <script>
+        // أنيميشن الثلج
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.classList.add('snowflake');
+            snow.innerText = ['❄','✨','❅','🎄','⭐','🎁','❆'][Math.floor(Math.random()*7)];
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.animationDuration = Math.random() * 5 + 5 + 's';
+            snow.style.fontSize = Math.random() * 1 + 1 + 'em';
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), 10000);
+        }
+        setInterval(createSnow, 300);
+
+        // أي يوزر وأي باس يدخل
+        document.getElementById('login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const loginForm = document.getElementById('loginForm');
+            loginForm.style.opacity = '0';
+            loginForm.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                loginForm.style.display = 'none';
+                document.getElementById('welcome').style.display = 'flex';
+            }, 800);
+        });
+
+        // لما يدوس "نسيت كلمة المرور؟"
+        document.getElementById('forgotPass').addEventListener('click', function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('papaMsg');
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 3000); // تختفي بعد 3 ثواني
+        });
+    </script>
+</body>
+</html>
