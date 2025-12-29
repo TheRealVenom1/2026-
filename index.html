@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عيد ميلاد مجيد - حجز الحفلة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // غير دي بالـ Public Key بتاعك من EmailJS
+            emailjs.init("غير_دي_بال_PUBLIC_KEY_بتاعك");
+        })();
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
@@ -183,7 +191,6 @@
     <div class="snowflake">❄</div><div class="snowflake">✨</div><div class="snowflake">❅</div><div class="snowflake">🎄</div>
     <div class="snowflake">⭐</div><div class="snowflake">🎁</div><div class="snowflake">❆</div>
 
-    <!-- صفحة اللوجن -->
     <div class="container" id="loginForm">
         <h2>🎅 عيد ميلاد مجيد 🎄</h2>
         <form id="login">
@@ -203,17 +210,14 @@
         </form>
     </div>
 
-    <!-- رسالة بس يا بابا -->
     <div class="papa-msg" id="papaMsg">بس يا بابا 😑</div>
 
-    <!-- You Are Welcome -->
     <div class="welcome" id="welcome">
         <i class="fas fa-gift fa-5x"></i>
         <div class="welcome-text">You Are Welcome</div>
         <i class="fas fa-sleigh fa-5x"></i>
     </div>
 
-    <!-- صفحة الحجز -->
     <div class="booking-page" id="bookingPage">
         <div class="container">
             <h2 class="booking-title">حجز حضور الحفلة الكبرى 🎅🎄</h2>
@@ -247,14 +251,12 @@
         </div>
     </div>
 
-    <!-- رسالة النجاح -->
     <div class="success-msg" id="successMsg">
         <i class="fas fa-check-circle fa-5x" style="color:#00ff00;"></i>
         <div class="success-text">تم حجز معادك بنجاح!<br>نورتنا 🎉</div>
         <i class="fas fa-party-horn fa-5x" style="color:#ffd700;"></i>
     </div>
 
-    <!-- الشاشة النهائية -->
     <div class="final-screen" id="finalScreen">
         <div class="final-text">
             شكرا لحجزك<br><br>
@@ -284,6 +286,66 @@
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('welcome').style.display = 'flex';
                 setTimeout(() => {
+                    document.getElementById('welcome').style.display = 'none';
+                    document.getElementById('bookingPage').style.display = 'flex';
+                }, 3000);
+            }, 800);
+        });
+
+        document.getElementById('forgotPass').addEventListener('click', function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('papaMsg');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        });
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const templateParams = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                people: document.getElementById('people').value,
+                date: document.getElementById('date').value,
+            };
+
+            // الـ Service ID مضاف هنا
+            emailjs.send('service_04f0jbr', 'غير_دي_بال_TEMPLATE_ID_بتاعك', templateParams)
+                .then(function(response) {
+                    console.log('الإيميل اتبعت بنجاح!', response);
+                    // كمل الرحلة
+                    document.getElementById('bookingPage').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('bookingPage').style.display = 'none';
+                        document.getElementById('successMsg').style.display = 'flex';
+                        setTimeout(() => {
+                            document.getElementById('successMsg').style.display = 'none';
+                            document.body.style.background = '#000000';
+                            document.getElementById('finalScreen').style.display = 'flex';
+                            document.querySelectorAll('.snowflake').forEach(s => s.remove());
+                        }, 3000);
+                    }, 800);
+                }, function(error) {
+                    console.log('فشل في الإرسال', error);
+                    alert('تم الحجز، بس في مشكلة في الإيميل. جرب تاني أو راسلني.');
+                    // كمل برضو عشان المستخدم ميزعلش
+                    document.getElementById('bookingPage').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('bookingPage').style.display = 'none';
+                        document.getElementById('successMsg').style.display = 'flex';
+                        setTimeout(() => {
+                            document.getElementById('successMsg').style.display = 'none';
+                            document.body.style.background = '#000000';
+                            document.getElementById('finalScreen').style.display = 'flex';
+                            document.querySelectorAll('.snowflake').forEach(s => s.remove());
+                        }, 3000);
+                    }, 800);
+                });
+        });
+    </script>
+</body>
+</html> setTimeout(() => {
                     document.getElementById('welcome').style.display = 'none';
                     document.getElementById('bookingPage').style.display = 'flex';
                 }, 3000);
@@ -343,7 +405,7 @@
                 date: document.getElementById('date').value,
             };
 
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+            emailjs.send('service_04f0jbr', 'YOUR_TEMPLATE_ID', templateParams)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
                     // انتقل لشاشة النجاح
