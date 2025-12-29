@@ -3,15 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول - عيد ميلاد مجيد</title>
+    <title>عيد ميلاد مجيد - حجز الحفلة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // هتغيره بالكي الحقيقي تحت
-        })();
-    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
@@ -190,7 +183,7 @@
     <div class="snowflake">❄</div><div class="snowflake">✨</div><div class="snowflake">❅</div><div class="snowflake">🎄</div>
     <div class="snowflake">⭐</div><div class="snowflake">🎁</div><div class="snowflake">❆</div>
 
-    <!-- لوجن -->
+    <!-- صفحة اللوجن -->
     <div class="container" id="loginForm">
         <h2>🎅 عيد ميلاد مجيد 🎄</h2>
         <form id="login">
@@ -210,15 +203,17 @@
         </form>
     </div>
 
+    <!-- رسالة بس يا بابا -->
     <div class="papa-msg" id="papaMsg">بس يا بابا 😑</div>
 
+    <!-- You Are Welcome -->
     <div class="welcome" id="welcome">
         <i class="fas fa-gift fa-5x"></i>
         <div class="welcome-text">You Are Welcome</div>
         <i class="fas fa-sleigh fa-5x"></i>
     </div>
 
-    <!-- صفحة الحجز مع خانة الإيميل -->
+    <!-- صفحة الحجز -->
     <div class="booking-page" id="bookingPage">
         <div class="container">
             <h2 class="booking-title">حجز حضور الحفلة الكبرى 🎅🎄</h2>
@@ -252,12 +247,14 @@
         </div>
     </div>
 
+    <!-- رسالة النجاح -->
     <div class="success-msg" id="successMsg">
         <i class="fas fa-check-circle fa-5x" style="color:#00ff00;"></i>
         <div class="success-text">تم حجز معادك بنجاح!<br>نورتنا 🎉</div>
         <i class="fas fa-party-horn fa-5x" style="color:#ffd700;"></i>
     </div>
 
+    <!-- الشاشة النهائية -->
     <div class="final-screen" id="finalScreen">
         <div class="final-text">
             شكرا لحجزك<br><br>
@@ -280,10 +277,43 @@
         }
         setInterval(createSnow, 300);
 
-        // دخول
         document.getElementById('login').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('loginForm').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('welcome').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('welcome').style.display = 'none';
+                    document.getElementById('bookingPage').style.display = 'flex';
+                }, 3000);
+            }, 800);
+        });
+
+        document.getElementById('forgotPass').addEventListener('click', function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('papaMsg');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        });
+
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('bookingPage').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('bookingPage').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('successMsg').style.display = 'none';
+                    document.body.style.background = '#000000';
+                    document.getElementById('finalScreen').style.display = 'flex';
+                    document.querySelectorAll('.snowflake').forEach(s => s.remove());
+                }, 3000);
+            }, 800);
+        });
+    </script>
+</body>
+</html>.opacity = '0';
             setTimeout(() => {
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('welcome').style.display = 'flex';
