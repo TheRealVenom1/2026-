@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - عيد ميلاد مجيد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // هتغيره بالكي الحقيقي تحت
+        })();
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
 
@@ -22,7 +29,6 @@
             transition: background 2s ease;
         }
 
-        /* ثلج نازل */
         .snowflake {
             position: absolute;
             top: -10px;
@@ -97,7 +103,6 @@
 
         button:hover { transform: scale(1.05); box-shadow: 0 0 25px gold; }
 
-        /* الشاشات */
         .welcome, .booking-page, .success-msg, .final-screen {
             display: none;
             flex-direction: column;
@@ -182,11 +187,10 @@
     </style>
 </head>
 <body>
-    <!-- ثلج نازل -->
     <div class="snowflake">❄</div><div class="snowflake">✨</div><div class="snowflake">❅</div><div class="snowflake">🎄</div>
     <div class="snowflake">⭐</div><div class="snowflake">🎁</div><div class="snowflake">❆</div>
 
-    <!-- صفحة اللوجن -->
+    <!-- لوجن -->
     <div class="container" id="loginForm">
         <h2>🎅 عيد ميلاد مجيد 🎄</h2>
         <form id="login">
@@ -206,36 +210,38 @@
         </form>
     </div>
 
-    <!-- رسالة بس يا بابا -->
     <div class="papa-msg" id="papaMsg">بس يا بابا 😑</div>
 
-    <!-- You Are Welcome -->
     <div class="welcome" id="welcome">
         <i class="fas fa-gift fa-5x"></i>
         <div class="welcome-text">You Are Welcome</div>
         <i class="fas fa-sleigh fa-5x"></i>
     </div>
 
-    <!-- صفحة الحجز -->
+    <!-- صفحة الحجز مع خانة الإيميل -->
     <div class="booking-page" id="bookingPage">
         <div class="container">
             <h2 class="booking-title">حجز حضور الحفلة الكبرى 🎅🎄</h2>
             <form id="bookingForm">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="اسمك الكامل" required>
+                    <input type="text" id="name" placeholder="اسمك الكامل" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="إيميلك" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-phone"></i>
-                    <input type="tel" placeholder="رقم التليفون" required>
+                    <input type="tel" id="phone" placeholder="رقم التليفون" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-users"></i>
-                    <input type="number" placeholder="عدد الأشخاص" min="1" value="1" required>
+                    <input type="number" id="people" placeholder="عدد الأشخاص" min="1" value="1" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-calendar"></i>
-                    <select required>
+                    <select id="date" required>
                         <option value="" disabled selected>اختر تاريخ الحفلة</option>
                         <option>31 ديسمبر 2025 - رأس السنة</option>
                         <option>1 يناير 2026 - حفلة الافتتاح</option>
@@ -246,14 +252,12 @@
         </div>
     </div>
 
-    <!-- رسالة النجاح -->
     <div class="success-msg" id="successMsg">
         <i class="fas fa-check-circle fa-5x" style="color:#00ff00;"></i>
         <div class="success-text">تم حجز معادك بنجاح!<br>نورتنا 🎉</div>
         <i class="fas fa-party-horn fa-5x" style="color:#ffd700;"></i>
     </div>
 
-    <!-- الشاشة النهائية (سوداء) -->
     <div class="final-screen" id="finalScreen">
         <div class="final-text">
             شكرا لحجزك<br><br>
@@ -264,7 +268,6 @@
     </div>
 
     <script>
-        // ثلج نازل
         function createSnow() {
             const snow = document.createElement('div');
             snow.classList.add('snowflake');
@@ -287,6 +290,52 @@
                 setTimeout(() => {
                     document.getElementById('welcome').style.display = 'none';
                     document.getElementById('bookingPage').style.display = 'flex';
+                }, 3000);
+            }, 800);
+        });
+
+        document.getElementById('forgotPass').addEventListener('click', function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('papaMsg');
+            msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        });
+
+        // إرسال الإيميل بجد عند الحجز
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const templateParams = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                people: document.getElementById('people').value,
+                date: document.getElementById('date').value,
+            };
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    // انتقل لشاشة النجاح
+                    document.getElementById('bookingPage').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('bookingPage').style.display = 'none';
+                        document.getElementById('successMsg').style.display = 'flex';
+                        setTimeout(() => {
+                            document.getElementById('successMsg').style.display = 'none';
+                            document.body.style.background = '#000000';
+                            document.getElementById('finalScreen').style.display = 'flex';
+                            document.querySelectorAll('.snowflake').forEach(s => s.remove());
+                        }, 3000);
+                    }, 800);
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('حصل خطأ في الإرسال، جرب تاني!');
+                });
+        });
+    </script>
+</body>
+</html>etElementById('bookingPage').style.display = 'flex';
                 }, 3000);
             }, 800);
         });
