@@ -19,6 +19,7 @@
             color: white;
             overflow: hidden;
             position: relative;
+            transition: background 2s ease;
         }
 
         /* ثلج نازل */
@@ -35,7 +36,7 @@
             to { transform: translateY(100vh); }
         }
 
-        .login-container {
+        .container {
             width: 400px;
             padding: 40px;
             background: rgba(0, 0, 0, 0.4);
@@ -59,7 +60,7 @@
             margin-bottom: 25px;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 15px 20px 15px 50px;
             background: rgba(255, 255, 255, 0.2);
@@ -69,7 +70,7 @@
             font-size: 16px;
         }
 
-        input::placeholder { color: rgba(255, 255, 255, 0.8); }
+        input::placeholder, select { color: rgba(255, 255, 255, 0.8); }
 
         .input-group i {
             position: absolute;
@@ -78,19 +79,6 @@
             transform: translateY(-50%);
             color: #ffd700;
             font-size: 20px;
-        }
-
-        .checkbox {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-
-        .forgot-link {
-            color: #ffd700;
-            text-decoration: none;
-            cursor: pointer;
         }
 
         button {
@@ -104,15 +92,78 @@
             cursor: pointer;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
             transition: 0.4s;
+            margin-top: 20px;
         }
 
         button:hover { transform: scale(1.05); box-shadow: 0 0 25px gold; }
 
-        /* رسالة "بس يا بابا" */
+        /* الشاشات */
+        .welcome, .booking-page, .success-msg, .final-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0; left: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .welcome-text {
+            font-size: 60px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px red, 0 0 40px green;
+            animation: glow 2s infinite alternate, scaleUp 2s ease;
+        }
+
+        .booking-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-shadow: 0 0 15px red;
+        }
+
+        .success-text {
+            font-size: 50px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 20px gold;
+            animation: pulse 1.5s infinite;
+        }
+
+        .final-text {
+            font-size: 50px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 20px #ff0000;
+            line-height: 1.8;
+        }
+
+        .developer {
+            font-size: 40px;
+            color: #ffffff;
+            margin: 20px 0;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes glow { from { text-shadow: 0 0 20px red; } to { text-shadow: 0 0 50px gold; } }
+        @keyframes scaleUp { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+        .forgot-link { color: #ffd700; text-decoration: none; cursor: pointer; }
         .papa-msg {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             font-size: 50px;
             font-weight: bold;
@@ -127,39 +178,7 @@
             transition: opacity 0.6s ease, transform 0.6s ease;
             z-index: 1000;
         }
-
-        .papa-msg.show {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        /* شاشة الترحيب */
-        .welcome {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100vw;
-            position: absolute;
-            top: 0; left: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-        }
-
-        .welcome-text {
-            font-size: 60px;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 0 0 20px red, 0 0 40px green;
-            animation: glow 2s infinite alternate, scaleUp 2s ease;
-        }
-
-        @keyframes glow { from { text-shadow: 0 0 20px red; } to { text-shadow: 0 0 50px gold; } }
-        @keyframes scaleUp { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
-        .welcome i { font-size: 100px; margin: 20px; color: #ff0000; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .papa-msg.show { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
     </style>
 </head>
 <body>
@@ -167,7 +186,8 @@
     <div class="snowflake">❄</div><div class="snowflake">✨</div><div class="snowflake">❅</div><div class="snowflake">🎄</div>
     <div class="snowflake">⭐</div><div class="snowflake">🎁</div><div class="snowflake">❆</div>
 
-    <div class="login-container" id="loginForm">
+    <!-- صفحة اللوجن -->
+    <div class="container" id="loginForm">
         <h2>🎅 عيد ميلاد مجيد 🎄</h2>
         <form id="login">
             <div class="input-group">
@@ -178,7 +198,7 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" placeholder="كلمة المرور">
             </div>
-            <div class="checkbox">
+            <div style="display:flex;justify-content:space-between;margin-bottom:30px;font-size:14px;">
                 <label><input type="checkbox"> تذكرني</label>
                 <a class="forgot-link" id="forgotPass">نسيت كلمة المرور؟</a>
             </div>
@@ -189,14 +209,62 @@
     <!-- رسالة بس يا بابا -->
     <div class="papa-msg" id="papaMsg">بس يا بابا 😑</div>
 
+    <!-- You Are Welcome -->
     <div class="welcome" id="welcome">
-        <i class="fas fa-gift"></i>
+        <i class="fas fa-gift fa-5x"></i>
         <div class="welcome-text">You Are Welcome</div>
-        <i class="fas fa-sleigh"></i>
+        <i class="fas fa-sleigh fa-5x"></i>
+    </div>
+
+    <!-- صفحة الحجز -->
+    <div class="booking-page" id="bookingPage">
+        <div class="container">
+            <h2 class="booking-title">حجز حضور الحفلة الكبرى 🎅🎄</h2>
+            <form id="bookingForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="اسمك الكامل" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" placeholder="رقم التليفون" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-users"></i>
+                    <input type="number" placeholder="عدد الأشخاص" min="1" value="1" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-calendar"></i>
+                    <select required>
+                        <option value="" disabled selected>اختر تاريخ الحفلة</option>
+                        <option>31 ديسمبر 2025 - رأس السنة</option>
+                        <option>1 يناير 2026 - حفلة الافتتاح</option>
+                    </select>
+                </div>
+                <button type="submit">تأكيد الحجز 🎉</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- رسالة النجاح -->
+    <div class="success-msg" id="successMsg">
+        <i class="fas fa-check-circle fa-5x" style="color:#00ff00;"></i>
+        <div class="success-text">تم حجز معادك بنجاح!<br>نورتنا 🎉</div>
+        <i class="fas fa-party-horn fa-5x" style="color:#ffd700;"></i>
+    </div>
+
+    <!-- الشاشة النهائية (سوداء) -->
+    <div class="final-screen" id="finalScreen">
+        <div class="final-text">
+            شكرا لحجزك<br><br>
+            مطور الموقع هو<br>
+            <span class="developer">TheRealVenom</span>
+        </div>
+        <div class="footer">©2026 TheRealVenom. All rights reserved</div>
     </div>
 
     <script>
-        // أنيميشن الثلج
+        // ثلج نازل
         function createSnow() {
             const snow = document.createElement('div');
             snow.classList.add('snowflake');
@@ -209,26 +277,44 @@
         }
         setInterval(createSnow, 300);
 
-        // أي يوزر وأي باس يدخل
+        // دخول
         document.getElementById('login').addEventListener('submit', function(e) {
             e.preventDefault();
-            const loginForm = document.getElementById('loginForm');
-            loginForm.style.opacity = '0';
-            loginForm.style.transform = 'scale(0.9)';
+            document.getElementById('loginForm').style.opacity = '0';
             setTimeout(() => {
-                loginForm.style.display = 'none';
+                document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('welcome').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('welcome').style.display = 'none';
+                    document.getElementById('bookingPage').style.display = 'flex';
+                }, 3000);
             }, 800);
         });
 
-        // لما يدوس "نسيت كلمة المرور؟"
+        // نسيت الباسورد
         document.getElementById('forgotPass').addEventListener('click', function(e) {
             e.preventDefault();
             const msg = document.getElementById('papaMsg');
             msg.classList.add('show');
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        });
+
+        // تأكيد الحجز
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('bookingPage').style.opacity = '0';
             setTimeout(() => {
-                msg.classList.remove('show');
-            }, 3000); // تختفي بعد 3 ثواني
+                document.getElementById('bookingPage').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'flex';
+                // بعد 3 ثواني يروح للشاشة السوداء النهائية
+                setTimeout(() => {
+                    document.getElementById('successMsg').style.display = 'none';
+                    document.body.style.background = '#000000';
+                    document.getElementById('finalScreen').style.display = 'flex';
+                    // إيقاف الثلج عشان الشاشة سوداء
+                    document.querySelectorAll('.snowflake').forEach(s => s.remove());
+                }, 3000);
+            }, 800);
         });
     </script>
 </body>
